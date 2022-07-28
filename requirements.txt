@@ -1,5 +1,6 @@
 psycopg2
 passlib
+pymysql
 fastapi==0.78.0
 Flask-JWT==0.3.2
 mysql==0.0.3
