@@ -13,12 +13,8 @@ def user_exist_check(db: Session, name: str):
 def create_user_query(db: Session, user: u.UserCreate):
     hashed_password = Hash.get_password_hash(user.password)
 
-    user = User(
-        email=user.email, name=user.name, hashed_password=hashed_password, hmt=0.00
-    )
+    user = User(name=user.name, hashed_password=hashed_password, hmt=0.01)
 
     db.add(user)
     db.commit()
-    db.refresh(user)
-    print(user)
     return user

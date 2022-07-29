@@ -16,7 +16,7 @@ def create_user_api(
     create_user: u.UserCreate,
     db: Session = Depends(rb.get_db),
 ):
-    exist = user_exist_check()
+    exist = user_exist_check(db=db, name=create_user.name)
     if exist:
         raise HTTPException(status_code=400, detail="user already exist")
 
