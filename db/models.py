@@ -26,6 +26,7 @@ class Bank(Base):
     __table_args__ = {"mysql_charset": "utf8mb4"}
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
+    hashed_password = Column(String(100))
     hmt = Column(Float, nullable=False)
     created_at = Column("created_at", DateTime, default=dt.now(), nullable=False)
     updated_at = Column(

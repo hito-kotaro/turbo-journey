@@ -1,6 +1,6 @@
 import os
 from sqlalchemy.orm import Session
-from db.models import User
+from db.models import User, Bank
 from fastapi.security import OAuth2PasswordBearer
 from typing import Optional
 from datetime import datetime, timedelta
@@ -31,9 +31,9 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     return encoded_jwt
 
 
-# ユーザーの存在確認
-def exist_check(user):
-    if not user:
+# 存在確認
+def exist_check(check):
+    if not check:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
         )
@@ -54,7 +54,7 @@ def auth_user(
 ):
     user = db.query(User).filter(User.name == request.name).first()
 
-    exist_check(user=user)
+    exist_check(check=user)
     password_check(
         request_password=request.password, hashed_password=user.hashed_password
     )
@@ -64,8 +64,30 @@ def auth_user(
     return {
         "access_token": access_token,
         "token_type": "bearer",
-        "user_id": user.id,
-        "user_name": user.name,
+        "id": user.id,
+        "name": user.name,
+        "isBank": False,
+    }
+
+
+def auth_bank(
+    request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(rb.get_db)
+):
+    bank = db.query(Bank).filter(Bank.name == request.name).first()
+
+    exist_check(check=bank)
+    password_check(
+        request_password=request.password, hashed_password=bank.hashed_password
+    )
+
+    access_token = create_access_token(data={"id": bank.id, "name": bank.name})
+
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "bank_id": bank.id,
+        "bank_name": bank.name,
+        "isBank": True,
     }
 
 
