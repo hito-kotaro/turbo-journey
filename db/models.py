@@ -48,6 +48,7 @@ class Request(Base):
     order_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     reward = Column(Float, nullable=False)
     public = Column(Boolean)
+    status = Column(Boolean)
     created_at = Column("created_at", DateTime, default=dt.now(), nullable=False)
     updated_at = Column(
         "updated_at",
