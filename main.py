@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import db.models as models
 from db.database import engine
-from routes import auth_routes, user_routes, bank_routes
+from routes import auth_routes, user_routes, bank_routes, request_router
 
 app = FastAPI()
 
@@ -17,6 +17,7 @@ app.add_middleware(
 app.include_router(auth_routes.router)
 app.include_router(user_routes.router)
 app.include_router(bank_routes.router)
+app.include_router(request_router.router)
 
 models.Base.metadata.create_all(bind=engine)
 
