@@ -17,7 +17,9 @@ def get_user_api(
     db: Session = Depends(rb.get_db),
     current_user: str = Depends(get_current_user),
 ):
-    return {"id": current_user.id, "name": current_user.name, "hmt": current_user.hmt}
+    test = {"id": current_user.id, "name": current_user.name, "hmt": current_user.hmt}
+    print(test)
+    return test
 
 
 @router.post("/create")

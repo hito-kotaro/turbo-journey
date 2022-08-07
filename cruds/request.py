@@ -1,11 +1,10 @@
-from sqlalchemy import or_
 from sqlalchemy.orm import Session
-from db.models import Request, User
+from db.models import Approve, Request, User
 import schema.request_schema as r
 
 
 # Publicの依頼とorder_idが一致する依頼のみ取得
-def get_enable_requests(db: Session, user_id: int):
+def get_requests(db: Session, user_id: int):
     requests = (
         db.query(
             Request.id,
@@ -22,13 +21,22 @@ def get_enable_requests(db: Session, user_id: int):
         )
         .filter(
             Request.owner_id == User.id,
-            or_(Request.public == True, Request.order_id == user_id),
         )
         .all()
     )
 
-    print(requests)
     return {"requests": requests}
+
+
+def complete_request_query(db: Session, request_id: int, user_id: int):
+    print("ok")
+    aprove = Approve(applicant_id=user_id, request_id=request_id, status="open")
+    request = db.query(Request).filter(Request.id == request_id).first()
+    request.status = False
+
+    db.add(aprove)
+    db.add(request)
+    db.commit()
 
 
 def create_request_query(db: Session, request: r.RequestCreate, owner_id: int):

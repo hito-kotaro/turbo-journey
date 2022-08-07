@@ -57,3 +57,20 @@ class Request(Base):
         onupdate=dt.now(),
         nullable=False,
     )
+
+
+class Approve(Base):
+    __tablename__ = "approves"
+    __table_args__ = {"mysql_charset": "utf8mb4"}
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    applicant_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    request_id = Column(Integer, ForeignKey("requests.id"), nullable=False)
+    status = Column(String(20), nullable=False)
+    created_at = Column("created_at", DateTime, default=dt.now(), nullable=False)
+    updated_at = Column(
+        "updated_at",
+        DateTime,
+        default=dt.now(),
+        onupdate=dt.now(),
+        nullable=False,
+    )
