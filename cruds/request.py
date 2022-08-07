@@ -1,14 +1,29 @@
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
-from db.models import Request
+from db.models import Request, User
 import schema.request_schema as r
 
 
 # Publicの依頼とorder_idが一致する依頼のみ取得
 def get_enable_requests(db: Session, user_id: int):
     requests = (
-        db.query(Request)
-        .filter(or_(Request.public == True, Request.order_id == user_id))
+        db.query(
+            Request.id,
+            Request.title,
+            Request.description,
+            Request.owner_id,
+            User.name.label("owner"),
+            Request.order_id,
+            Request.reward,
+            Request.public,
+            Request.status,
+            Request.created_at,
+            Request.updated_at,
+        )
+        .filter(
+            Request.owner_id == User.id,
+            or_(Request.public == True, Request.order_id == user_id),
+        )
         .all()
     )
 

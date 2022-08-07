@@ -18,3 +18,9 @@ def create_user_query(db: Session, user: u.UserCreate):
     db.add(user)
     db.commit()
     return user
+
+
+def get_user_name(db: Session, id: int):
+    user = db.query(User).filter(User.id == id).first
+    print(user)
+    return "test"

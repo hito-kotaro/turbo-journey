@@ -8,6 +8,7 @@ class Request(BaseModel):
     title: str
     description: str
     owner_id: int
+    owner: str
     order_id: Optional[int]
     reward: int
     public: bool
