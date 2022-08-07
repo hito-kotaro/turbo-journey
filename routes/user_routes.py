@@ -2,6 +2,7 @@ from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 import schema.user_schema as u
 from routes import router_base as rb
+from cruds.auth import get_current_user
 from cruds.user import (
     user_exist_check,
     create_user_query,
@@ -9,6 +10,14 @@ from cruds.user import (
 
 
 router = rb.create_router("user")
+
+
+@router.get("/")
+def get_user_api(
+    db: Session = Depends(rb.get_db),
+    current_user: str = Depends(get_current_user),
+):
+    return {"id": current_user.id, "name": current_user.name, "hmt": current_user.hmt}
 
 
 @router.post("/create")
