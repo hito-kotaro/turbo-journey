@@ -24,3 +24,9 @@ def get_user_name(db: Session, id: int):
     user = db.query(User).filter(User.id == id).first
     print(user)
     return "test"
+
+
+def get_user_list(db: Session):
+    users = db.query(User).all()
+
+    return {"users": users}

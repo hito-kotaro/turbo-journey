@@ -4,6 +4,7 @@ import schema.user_schema as u
 from routes import router_base as rb
 from cruds.auth import get_current_user
 from cruds.user import (
+    get_user_list,
     user_exist_check,
     create_user_query,
 )
@@ -17,9 +18,16 @@ def get_user_api(
     db: Session = Depends(rb.get_db),
     current_user: str = Depends(get_current_user),
 ):
-    test = {"id": current_user.id, "name": current_user.name, "hmt": current_user.hmt}
-    print(test)
-    return test
+    user = {"id": current_user.id, "name": current_user.name, "hmt": current_user.hmt}
+    return user
+
+
+@router.get("/all", response_model=u.Users)
+def get_user_list_api(
+    db: Session = Depends(rb.get_db),
+    current_user: str = Depends(get_current_user),
+):
+    return get_user_list(db=db)
 
 
 @router.post("/create")
