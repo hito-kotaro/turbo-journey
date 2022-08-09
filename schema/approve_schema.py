@@ -7,6 +7,8 @@ class Approve(BaseModel):
     status: str
     title: str
     description: str
+    owner_id: int
+    owner: str
     reward: float
     applicant: str
 
