@@ -5,9 +5,15 @@ from routes import router_base as rb
 from cruds.bank import (
     bank_exist_check,
     create_bank_query,
+    get_gas_query,
 )
 
 router = rb.create_router("bank")
+
+
+@router.get("/gas")
+def get_gas_api(db: Session = Depends(rb.get_db)):
+    return get_gas_query(db=db)
 
 
 @router.post("/create")

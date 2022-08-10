@@ -18,3 +18,9 @@ def create_bank_query(db: Session, bank: b.BankCreate):
     db.add(bank)
     db.commit()
     return bank
+
+
+def get_gas_query(db: Session):
+    bank = db.query(Bank).filter(Bank.id == 1).first()
+
+    return bank.gas
