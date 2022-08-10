@@ -21,3 +21,8 @@ class Approves(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class UpdateApprove(BaseModel):
+    id: int
+    new_status: str

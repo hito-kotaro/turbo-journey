@@ -13,7 +13,7 @@ def bank_exist_check(db: Session, name: str):
 def create_bank_query(db: Session, bank: b.BankCreate):
     hashed_password = Hash.get_password_hash(bank.password)
 
-    bank = Bank(name=bank.name, hashed_password=hashed_password, hmt=1000.00)
+    bank = Bank(name=bank.name, hashed_password=hashed_password, hmt=1000.00, gas=0.05)
 
     db.add(bank)
     db.commit()

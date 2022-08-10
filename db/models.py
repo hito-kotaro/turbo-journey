@@ -28,6 +28,7 @@ class Bank(Base):
     name = Column(String(100), nullable=False)
     hashed_password = Column(String(100))
     hmt = Column(Float, nullable=False)
+    gas = Column(Float, nullable=False)
     created_at = Column("created_at", DateTime, default=dt.now(), nullable=False)
     updated_at = Column(
         "updated_at",

@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
+from db.models import Approve
+
 
 # 承認依頼一覧を取得する。
 def get_approves_query(db: Session):
@@ -45,3 +47,11 @@ def get_approves_query(db: Session):
         print(a)
         approves.append(a)
     return {"approves": approves}
+
+
+def update_approve_query(db: Session, new_status: str, approve_id: int):
+    approve = db.query(Approve).filter(Approve.id == approve_id).first()
+    approve.status = new_status
+
+    db.commit()
+    return {"message": "update ok"}
