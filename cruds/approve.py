@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 
-from db.models import Approve
+from db.models import Approve, Bank, Request, User
 
 
 # 承認依頼一覧を取得する。
@@ -52,6 +52,25 @@ def get_approves_query(db: Session):
 def update_approve_query(db: Session, new_status: str, approve_id: int):
     approve = db.query(Approve).filter(Approve.id == approve_id).first()
     approve.status = new_status
+
+    bank_id = 1
+    # Gasを取得
+    bank = db.query(Bank).filter(Bank.id == bank_id).first()
+
+    # rewardを取得
+    request = db.query(Request).filter(Request.id == approve.request_id).first()
+    # # # 対象のゆーざーを取得
+    user = db.query(User).filter(User.id == approve.applicant_id).first()
+
+    reward = request.reward
+    tax = bank.gas * request.reward
+
+    print(bank.gas)
+    print(request.reward)
+    print((request.reward) - (bank.gas * request.reward))
+    total = reward - tax
+    print(total)
+    user.hmt += total
 
     db.commit()
     return {"message": "update ok"}
