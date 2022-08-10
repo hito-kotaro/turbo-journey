@@ -13,7 +13,7 @@ pwd_cxt = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @router.post("/", response_model=a.AuthResponse)
 def create_access_token(request: a.AuthRequest, db: Session = Depends(rb.get_db)):
-    print(request)
+    # print(request)
 
     if request.isBank:
         return auth_bank(request=request, db=db)

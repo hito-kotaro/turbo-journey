@@ -44,7 +44,7 @@ def get_approves_query(db: Session):
             "applicant_id": r["applicant_id"],
             "applicant": r["applicant"],
         }
-        print(a)
+        # print(a)
         approves.append(a)
     return {"approves": approves}
 
@@ -65,11 +65,11 @@ def update_approve_query(db: Session, new_status: str, approve_id: int):
     reward = request.reward
     tax = bank.gas * request.reward
 
-    print(bank.gas)
-    print(request.reward)
-    print((request.reward) - (bank.gas * request.reward))
+    # print(bank.gas)
+    # print(request.reward)
+    # print((request.reward) - (bank.gas * request.reward))
     total = reward - tax
-    print(total)
+    # print(total)
     user.hmt += total
 
     db.commit()

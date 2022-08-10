@@ -29,7 +29,7 @@ def get_requests(db: Session, user_id: int):
 
 
 def complete_request_query(db: Session, request_id: int, user_id: int):
-    print("ok")
+    # print("ok")
     aprove = Approve(applicant_id=user_id, request_id=request_id, status="open")
     request = db.query(Request).filter(Request.id == request_id).first()
     request.status = False
@@ -56,7 +56,7 @@ def create_request_query(db: Session, request: r.RequestCreate, owner_id: int):
         status=True,
     )
 
-    print(new_request)
+    # print(new_request)
     db.add(new_request)
     db.commit()
     db.refresh(new_request)

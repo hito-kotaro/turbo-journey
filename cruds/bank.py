@@ -10,6 +10,11 @@ def bank_exist_check(db: Session, name: str):
     return bank
 
 
+def get_bank_query(db: Session, id: int):
+    bank = db.query(Bank).filter(Bank.id == id).first()
+    return {"bank": bank}
+
+
 def create_bank_query(db: Session, bank: b.BankCreate):
     hashed_password = Hash.get_password_hash(bank.password)
 
