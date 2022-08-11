@@ -18,6 +18,8 @@ def get_request_api(
     current_user: str = Depends(get_current_user),
 ):
 
+    print(current_user)
+
     return get_requests(db=db, user_id=current_user.id)
 
 
@@ -27,6 +29,7 @@ def create_request_api(
     db: Session = Depends(rb.get_db),
     current_user: str = Depends(get_current_user),
 ):
+    print(current_user)
     return create_request_query(db=db, request=create_request, owner_id=current_user.id)
 
 

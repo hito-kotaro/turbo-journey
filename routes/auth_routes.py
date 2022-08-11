@@ -15,7 +15,7 @@ pwd_cxt = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def create_access_token(request: a.AuthRequest, db: Session = Depends(rb.get_db)):
     # print(request)
 
-    if request.isBank:
+    if request.is_bank:
         return auth_bank(request=request, db=db)
     else:
         return auth_user(request=request, db=db)

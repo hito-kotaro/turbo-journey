@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from db.models import Approve, Request, User
+from db.models import Approve, Bank, Request, User
 import schema.request_schema as r
 
 
@@ -32,7 +32,8 @@ def complete_request_query(db: Session, request_id: int, user_id: int):
     # print("ok")
     aprove = Approve(applicant_id=user_id, request_id=request_id, status="open")
     request = db.query(Request).filter(Request.id == request_id).first()
-    request.status = False
+    if request.is_bank == False:
+        request.status = False
 
     db.add(aprove)
     db.add(request)
@@ -40,6 +41,13 @@ def complete_request_query(db: Session, request_id: int, user_id: int):
 
 
 def create_request_query(db: Session, request: r.RequestCreate, owner_id: int):
+    # 発行者を取得
+    if request.is_bank:
+        user = db.query(Bank).filter(Bank.id == owner_id).first()
+    else:
+        user = db.query(User).filter(User.id == owner_id).first()
+
+    user.hmt -= request.reward
 
     if request.order_id == -1:
         order_id = None
@@ -53,6 +61,7 @@ def create_request_query(db: Session, request: r.RequestCreate, owner_id: int):
         order_id=order_id,
         reward=request.reward,
         public=request.public,
+        is_bank=request.is_bank,
         status=True,
     )
 

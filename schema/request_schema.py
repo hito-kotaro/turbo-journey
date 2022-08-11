@@ -33,3 +33,4 @@ class RequestCreate(BaseModel):
     order_id: int
     reward: float
     public: bool
+    is_bank: bool

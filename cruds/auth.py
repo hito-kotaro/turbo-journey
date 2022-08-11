@@ -59,14 +59,16 @@ def auth_user(
         request_password=request.password, hashed_password=user.hashed_password
     )
 
-    access_token = create_access_token(data={"id": user.id, "name": user.name})
+    access_token = create_access_token(
+        data={"id": user.id, "name": user.name, "is_bank": False}
+    )
 
     return {
         "access_token": access_token,
         "token_type": "bearer",
         "id": user.id,
         "name": user.name,
-        "isBank": False,
+        "is_bank": False,
     }
 
 
@@ -80,19 +82,24 @@ def auth_bank(
         request_password=request.password, hashed_password=bank.hashed_password
     )
 
-    access_token = create_access_token(data={"id": bank.id, "name": bank.name})
+    access_token = create_access_token(
+        data={"id": bank.id, "name": bank.name, "is_bank": True}
+    )
 
     return {
         "access_token": access_token,
         "token_type": "bearer",
-        "bank_id": bank.id,
-        "bank_name": bank.name,
-        "isBank": True,
+        "id": bank.id,
+        "name": bank.name,
+        "is_bank": True,
     }
 
 
-def get_user_by_id(db: Session, id: int):
-    user = db.query(User).filter(User.id == id).first()
+def get_user_by_id(db: Session, id: int, is_bank: bool):
+    if is_bank:
+        user = db.query(Bank).filter(Bank.id == id).first()
+    else:
+        user = db.query(User).filter(User.id == id).first()
 
     if not user:
         raise HTTPException(
@@ -113,13 +120,18 @@ def get_current_user(
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-        user_name: str = payload.get("name")
-        user_id: int = payload.get("id")
-        if user_name is None:
+        name: str = payload.get("name")
+        id: int = payload.get("id")
+        is_bank: bool = payload.get("is_bank")
+        if name is None:
             raise credentials_exception
     except JWTError:
         raise credentials_exception
-    user = get_user_by_id(db=db, id=user_id)
+    user = get_user_by_id(
+        db=db,
+        id=id,
+        is_bank=is_bank,
+    )
     if user is None:
         raise credentials_exception
     return user

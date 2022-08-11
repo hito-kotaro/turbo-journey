@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field
 class AuthRequest(BaseModel):
     name: str
     password: str
-    isBank: boolean
+    is_bank: boolean
 
 
 class AuthResponse(BaseModel):
@@ -13,4 +13,4 @@ class AuthResponse(BaseModel):
     token_type: str = Field(None, example="bearer")
     id: int = Field(None, example=1)
     name: str = Field(None, example="tohi")
-    isBank: boolean
+    is_bank: boolean
