@@ -29,3 +29,11 @@ def get_gas_query(db: Session):
     bank = db.query(Bank).filter(Bank.id == 1).first()
 
     return bank.gas
+
+
+def update_gas_query(db: Session, new_gas: b.GasUpdate):
+    bank = db.query(Bank).filter(Bank.id == 1).first()
+    bank.gas = new_gas
+
+    db.add(bank)
+    db.commit()

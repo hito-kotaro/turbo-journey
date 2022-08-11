@@ -54,7 +54,7 @@ def update_approve_query(db: Session, new_status: str, approve_id: int):
     approve.status = new_status
 
     bank_id = 1
-    # Gasを取得
+    # Bankを取得
     bank = db.query(Bank).filter(Bank.id == bank_id).first()
 
     # rewardを取得
@@ -71,6 +71,7 @@ def update_approve_query(db: Session, new_status: str, approve_id: int):
     total = reward - tax
     # print(total)
     user.hmt += total
+    bank.hmt += tax
 
     db.commit()
     return {"message": "update ok"}

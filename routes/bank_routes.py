@@ -7,6 +7,7 @@ from cruds.bank import (
     bank_exist_check,
     create_bank_query,
     get_gas_query,
+    update_gas_query,
 )
 
 router = rb.create_router("bank")
@@ -38,3 +39,8 @@ def create_bank_api(
         raise HTTPException(status_code=400, detail="bank already exist")
 
     return create_bank_query(db=db, bank=create_bank)
+
+
+@router.put("/update/gas")
+def update_gas_api(update: b.GasUpdate, db: Session = Depends(rb.get_db)):
+    return update_gas_query(db=db, new_gas=update.new_gas)

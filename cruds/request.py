@@ -1,29 +1,70 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import text
 from db.models import Approve, Bank, Request, User
 import schema.request_schema as r
 
 
-# Publicの依頼とorder_idが一致する依頼のみ取得
 def get_requests(db: Session, user_id: int):
-    requests = (
-        db.query(
-            Request.id,
-            Request.title,
-            Request.description,
-            Request.owner_id,
-            User.name.label("owner"),
-            Request.order_id,
-            Request.reward,
-            Request.public,
-            Request.status,
-            Request.created_at,
-            Request.updated_at,
-        )
-        .filter(
-            Request.owner_id == User.id,
-        )
-        .all()
-    )
+
+    statement = """
+    SELECT
+        r.id,
+        r.title,
+        r.description,
+        r.owner_id,
+        r.order_id,
+        r.reward,
+        r.public,
+        r.status,
+        r.created_at,
+        r.updated_at,
+        CASE WHEN r.is_bank = True THEN b.name ELSE u.name  END AS owner
+        FROM requests as r
+        JOIN banks as b
+            ON r.owner_id = b.id
+        JOIN users as u
+            ON r.owner_id = u.id;
+    """
+    sql_statement = text(statement)
+    results = db.execute(sql_statement)
+
+    # requests = (
+    #     db.query(
+    #         Request.id,
+    #         Request.title,
+    #         Request.description,
+    #         Request.owner_id,
+    #         User.owner
+    #         Request.order_id,
+    #         Request.reward,
+    #         Request.public,
+    #         Request.status,
+    #         Request.created_at,
+    #         Request.updated_at,
+    #     )
+    #     .filter(
+    #         Request.owner_id == User.id,
+    #     )
+    #     .all()
+    # )
+
+    requests = []
+
+    for result in results:
+        request = {
+            "id": result["id"],
+            "title": result["title"],
+            "description": result["description"],
+            "owner_id": result["owner_id"],
+            "owner": result["owner"],
+            "order_id": result["order_id"],
+            "reward": result["reward"],
+            "public": result["public"],
+            "status": result["status"],
+            "created_at": result["created_at"],
+            "updated_at": result["updated_at"],
+        }
+        requests.append(request)
 
     return {"requests": requests}
 
