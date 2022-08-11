@@ -45,7 +45,7 @@ class Request(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String(100), nullable=False)
     description = Column(Text(), nullable=True)
-    owner_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    owner_id = Column(Integer)
     order_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     reward = Column(Float, nullable=False)
     public = Column(Boolean)

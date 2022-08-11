@@ -59,17 +59,20 @@ def update_approve_query(db: Session, new_status: str, approve_id: int):
 
     # rewardを取得
     request = db.query(Request).filter(Request.id == approve.request_id).first()
-    # # # 対象のゆーざーを取得
+
+    # 対象のゆーざーを取得
     user = db.query(User).filter(User.id == approve.applicant_id).first()
 
     reward = request.reward
     tax = bank.gas * request.reward
 
-    # print(bank.gas)
-    # print(request.reward)
-    # print((request.reward) - (bank.gas * request.reward))
+    # 銀行依頼であれば、完了時に銀行から引く
+    if request.is_bank:
+        if bank.hmt < reward:
+            return {"message": "銀行にhmtがありません"}
+        bank.hmt -= reward
+
     total = reward - tax
-    # print(total)
     user.hmt += total
     bank.hmt += tax
 

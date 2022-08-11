@@ -87,8 +87,7 @@ def create_request_query(db: Session, request: r.RequestCreate, owner_id: int):
         user = db.query(Bank).filter(Bank.id == owner_id).first()
     else:
         user = db.query(User).filter(User.id == owner_id).first()
-
-    user.hmt -= request.reward
+        user.hmt -= request.reward
 
     if request.order_id == -1:
         order_id = None
