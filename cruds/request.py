@@ -20,9 +20,9 @@ def get_requests(db: Session, user_id: int):
         r.updated_at,
         CASE WHEN r.is_bank = True THEN b.name ELSE u.name  END AS owner
         FROM requests as r
-        JOIN banks as b
+        LEFT JOIN banks as b
             ON r.owner_id = b.id
-        JOIN users as u
+        LEFT JOIN users as u
             ON r.owner_id = u.id;
     """
     sql_statement = text(statement)
@@ -65,7 +65,7 @@ def get_requests(db: Session, user_id: int):
             "updated_at": result["updated_at"],
         }
         requests.append(request)
-
+    print(requests)
     return {"requests": requests}
 
 
