@@ -20,3 +20,12 @@ class Users(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class UpdateUserName(BaseModel):
+    name: str
+
+
+class UpdateUserPwd(BaseModel):
+    current_pwd: str
+    new_pwd: str
