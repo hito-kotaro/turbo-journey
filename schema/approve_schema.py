@@ -11,6 +11,7 @@ class Approve(BaseModel):
     owner: str
     reward: float
     applicant: str
+    applicant_id: int
 
     class Config:
         orm_mode = True
