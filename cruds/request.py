@@ -112,9 +112,32 @@ def create_request_query(db: Session, request: r.RequestCreate, owner_id: int):
     return new_request.id
 
 
-def update_close_request_query(db: Session, request_id: int):
+# gasを引いた金額をユーザーに戻す処理
+def sendBackToken(db: Session, user_id: int, reward: float):
+    bank = db.query(Bank).filter(Bank.id == 1).first()
+    user = db.query(User).filter(User.id).first()
+
+    # gasを取得
+    gas = bank.gas
+
+    # rewardからtaxを計算
+    tax = reward * gas
+
+    # taxをbankに加算
+    bank.hmt += tax
+
+    # 残りをuserに加算
+    user.hmt += reward - tax
+
+    db.commit()
+    return 0
+
+
+def update_close_request_query(db: Session, request_id: int, user_id: int):
     request = db.query(Request).filter(Request.id == request_id).first()
-    request.status == False
+    request.status = False
+
+    sendBackToken(db=db, user_id=user_id, reward=request.reward)
 
     db.commit()
     return {"message": "close ok"}

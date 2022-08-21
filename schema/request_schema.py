@@ -10,7 +10,7 @@ class Request(BaseModel):
     owner_id: int
     owner: str
     order_id: Optional[int]
-    reward: int
+    reward: float
     public: bool
     status: bool
     created_at: datetime
