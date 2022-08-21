@@ -13,6 +13,7 @@ class Request(BaseModel):
     reward: float
     public: bool
     status: bool
+    is_bank: bool
     created_at: datetime
     updated_at: datetime
 

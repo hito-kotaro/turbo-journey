@@ -15,6 +15,7 @@ def get_approves_query(db: Session):
         r.owner_id,
         r.order_id,
         r.reward,
+        r.is_bank,
         a.applicant_id,
         u.name as applicant,
         u2.name as owner
@@ -43,6 +44,7 @@ def get_approves_query(db: Session):
             "reward": r["reward"],
             "applicant_id": r["applicant_id"],
             "applicant": r["applicant"],
+            "is_bank": r["is_bank"],
         }
         # print(a)
         approves.append(a)

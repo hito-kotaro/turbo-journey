@@ -16,6 +16,7 @@ def get_requests(db: Session, user_id: int):
         r.reward,
         r.public,
         r.status,
+        r.is_bank,
         r.created_at,
         r.updated_at,
         CASE WHEN r.is_bank = True THEN b.name ELSE u.name  END AS owner
@@ -61,6 +62,7 @@ def get_requests(db: Session, user_id: int):
             "reward": result["reward"],
             "public": result["public"],
             "status": result["status"],
+            "is_bank": result["is_bank"],
             "created_at": result["created_at"],
             "updated_at": result["updated_at"],
         }
