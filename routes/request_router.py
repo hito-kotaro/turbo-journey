@@ -44,10 +44,10 @@ def complete_request_api(
     return complete_request_query(db=db, request_id=request_id, user_id=current_user.id)
 
 
-@router.put("/update/close")
+@router.put("/close/{request_id}")
 def update_close_request_api(
-    request_id: r.RequestClose,
+    request_id: int,
     db: Session = Depends(rb.get_db),
     current_user: str = Depends(get_current_user),
 ):
-    return update_close_request_query(db=db, request_id=request_id.id)
+    return update_close_request_query(db=db, request_id=request_id)

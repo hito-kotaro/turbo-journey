@@ -34,7 +34,3 @@ class RequestCreate(BaseModel):
     reward: float
     public: bool
     is_bank: bool
-
-
-class RequestClose(BaseModel):
-    id: int
