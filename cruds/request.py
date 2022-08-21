@@ -110,3 +110,11 @@ def create_request_query(db: Session, request: r.RequestCreate, owner_id: int):
     db.commit()
     db.refresh(new_request)
     return new_request.id
+
+
+def update_close_request_query(db: Session, request_id: int):
+    request = db.query(Request).filter(Request.id == request_id).first()
+    request.status == False
+
+    db.commit()
+    return {"message": "close ok"}
