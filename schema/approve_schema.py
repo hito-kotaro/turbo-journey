@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List
 from pydantic import BaseModel
 
@@ -12,7 +13,10 @@ class Approve(BaseModel):
     reward: float
     applicant: str
     applicant_id: int
+    description: str
     is_bank: bool
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
         orm_mode = True
