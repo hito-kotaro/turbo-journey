@@ -21,15 +21,17 @@ def get_approves_query(db: Session):
         r.updated_at,
         a.applicant_id,
         u.name as applicant,
-        u2.name as owner
+        CASE WHEN r.is_bank = True THEN b.name ELSE u.name  END AS owner
     FROM
         approves as a
-    JOIN requests as r
+    LEFT JOIN requests as r
         ON a.request_id = r.id
-    JOIN users as u
+    LEFT JOIN users as u
         ON a.applicant_id = u.id
-    JOIN users as u2
-        ON r.owner_id = u2.id;
+    LEFT JOIN users as u2
+        ON r.owner_id = u2.id
+    LEFT JOIN banks as b
+        ON r.owner_id = b.id;
     """
     sql_statement = text(statement)
     result = db.execute(sql_statement)
@@ -47,7 +49,6 @@ def get_approves_query(db: Session):
             "reward": r["reward"],
             "applicant_id": r["applicant_id"],
             "applicant": r["applicant"],
-            "description": r["description"],
             "is_bank": r["is_bank"],
             "created_at": r["created_at"],
             "updated_at": r["updated_at"],
