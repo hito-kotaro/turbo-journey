@@ -17,8 +17,8 @@ def get_approves_query(db: Session):
         r.reward,
         r.is_bank,
         r.description,
-        r.created_at,
-        r.updated_at,
+        a.created_at,
+        a.updated_at,
         a.applicant_id,
         u.name as applicant,
         CASE WHEN r.is_bank = True THEN b.name ELSE u.name  END AS owner
