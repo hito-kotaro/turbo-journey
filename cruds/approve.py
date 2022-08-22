@@ -21,7 +21,7 @@ def get_approves_query(db: Session):
         a.updated_at,
         a.applicant_id,
         u.name as applicant,
-        CASE WHEN r.is_bank = True THEN b.name ELSE u.name  END AS owner
+        CASE WHEN r.is_bank = True THEN b.name ELSE u2.name  END AS owner
     FROM
         approves as a
     LEFT JOIN requests as r
