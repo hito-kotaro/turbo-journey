@@ -1,6 +1,7 @@
 from datetime import datetime as dt
 from sqlalchemy.schema import Column
-from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, Boolean, Text
+from sqlalchemy import Float, ForeignKey, Integer, String, Boolean, Text
+from sqlalchemy.dialects.mysql import TIMESTAMP as Timestamp
 from db.database import Base
 
 
@@ -11,10 +12,10 @@ class User(Base):
     name = Column(String(100), nullable=False)
     hashed_password = Column(String(100))
     hmt = Column(Float, nullable=False)
-    created_at = Column("created_at", DateTime, default=dt.now(), nullable=False)
+    created_at = Column("created_at", Timestamp, default=dt.now(), nullable=False)
     updated_at = Column(
         "updated_at",
-        DateTime,
+        Timestamp,
         default=dt.now(),
         onupdate=dt.now(),
         nullable=False,
@@ -29,10 +30,10 @@ class Bank(Base):
     hashed_password = Column(String(100))
     hmt = Column(Float, nullable=False)
     gas = Column(Float, nullable=False)
-    created_at = Column("created_at", DateTime, default=dt.now(), nullable=False)
+    created_at = Column("created_at", Timestamp, default=dt.now(), nullable=False)
     updated_at = Column(
         "updated_at",
-        DateTime,
+        Timestamp,
         default=dt.now(),
         onupdate=dt.now(),
         nullable=False,
@@ -51,10 +52,10 @@ class Request(Base):
     public = Column(Boolean)
     status = Column(Boolean)
     is_bank = Column(Boolean)
-    created_at = Column("created_at", DateTime, default=dt.now(), nullable=False)
+    created_at = Column("created_at", Timestamp, default=dt.now(), nullable=False)
     updated_at = Column(
         "updated_at",
-        DateTime,
+        Timestamp,
         default=dt.now(),
         onupdate=dt.now(),
         nullable=False,
@@ -68,10 +69,10 @@ class Approve(Base):
     applicant_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     request_id = Column(Integer, ForeignKey("requests.id"), nullable=False)
     status = Column(String(20), nullable=False)
-    created_at = Column("created_at", DateTime, default=dt.now(), nullable=False)
+    created_at = Column("created_at", Timestamp, default=dt.now(), nullable=False)
     updated_at = Column(
         "updated_at",
-        DateTime,
+        Timestamp,
         default=dt.now(),
         onupdate=dt.now(),
         nullable=False,
