@@ -20,6 +20,7 @@ app.include_router(bank_routes.router)
 app.include_router(request_router.router)
 app.include_router(approve_router.router)
 
+
 models.Base.metadata.create_all(bind=engine)
 
 
