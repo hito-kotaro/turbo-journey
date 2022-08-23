@@ -31,7 +31,8 @@ def get_approves_query(db: Session):
     LEFT JOIN users as u2
         ON r.owner_id = u2.id
     LEFT JOIN banks as b
-        ON r.owner_id = b.id;
+        ON r.owner_id = b.id
+    ORDER BY a.created_at desc;
     """
     sql_statement = text(statement)
     result = db.execute(sql_statement)
