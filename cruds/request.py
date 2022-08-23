@@ -1,3 +1,4 @@
+from datetime import datetime as dt
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 from db.models import Approve, Bank, Request, User
@@ -73,10 +74,17 @@ def get_requests(db: Session, user_id: int):
 
 def complete_request_query(db: Session, request_id: int, user_id: int):
     # print("ok")
-    aprove = Approve(applicant_id=user_id, request_id=request_id, status="open")
+    aprove = Approve(
+        applicant_id=user_id,
+        request_id=request_id,
+        status="open",
+        created_at=dt.now(),
+        updated_at=dt.now(),
+    )
     request = db.query(Request).filter(Request.id == request_id).first()
     if request.is_bank == False:
         request.status = False
+        request.updated_at = dt.now()
 
     db.add(aprove)
     db.add(request)
@@ -105,6 +113,8 @@ def create_request_query(db: Session, request: r.RequestCreate, owner_id: int):
         public=request.public,
         is_bank=request.is_bank,
         status=True,
+        created_at=dt.now(),
+        updated_at=dt.now(),
     )
 
     # print(new_request)
@@ -131,6 +141,8 @@ def sendBackToken(db: Session, user_id: int, reward: float):
     # 残りをuserに加算
     user.hmt += reward - tax
 
+    user.updated_at = dt.now()
+    bank.updated_at = dt.now()
     db.commit()
     return 0
 
@@ -138,7 +150,7 @@ def sendBackToken(db: Session, user_id: int, reward: float):
 def update_close_request_query(db: Session, request_id: int, user_id: int):
     request = db.query(Request).filter(Request.id == request_id).first()
     request.status = False
-
+    request.updated_at = dt.now()
     sendBackToken(db=db, user_id=user_id, reward=request.reward)
 
     db.commit()

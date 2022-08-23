@@ -1,3 +1,4 @@
+from datetime import datetime as dt
 from sqlalchemy.orm import Session
 from db.models import Bank
 from utils.hash import Hash
@@ -18,7 +19,14 @@ def get_bank_query(db: Session, id: int):
 def create_bank_query(db: Session, bank: b.BankCreate):
     hashed_password = Hash.get_password_hash(bank.password)
 
-    bank = Bank(name=bank.name, hashed_password=hashed_password, hmt=1000.00, gas=0.05)
+    bank = Bank(
+        name=bank.name,
+        hashed_password=hashed_password,
+        hmt=1000.00,
+        gas=0.05,
+        created_at=dt.now(),
+        updated_at=dt.now(),
+    )
 
     db.add(bank)
     db.commit()
@@ -34,6 +42,5 @@ def get_gas_query(db: Session):
 def update_gas_query(db: Session, new_gas: b.GasUpdate):
     bank = db.query(Bank).filter(Bank.id == 1).first()
     bank.gas = new_gas
-
-    db.add(bank)
+    bank.updated_at = dt.now()
     db.commit()
