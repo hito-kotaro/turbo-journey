@@ -7,7 +7,7 @@ import libs.line as line
 router = rb.create_router("line")
 
 
-@router.get("/request", responseModel=line_sc.ResponseCode)
+@router.post("/request", responseModel=line_sc.ResponseCode)
 def post_request_api(
     params: line_sc.PostRequestTitle,
     current_user: str = Depends(get_current_user),
@@ -17,7 +17,7 @@ def post_request_api(
     )
 
 
-@router.get("/complete", responseModel=line_sc.ResponseCode)
+@router.post("/complete", responseModel=line_sc.ResponseCode)
 def post_complete_api(
     params: line_sc.PostComplete,
     current_user: str = Depends(get_current_user),
@@ -29,7 +29,7 @@ def post_complete_api(
     )
 
 
-@router.get("/approve", responseModel=line_sc.ResponseCode)
+@router.post("/approve", responseModel=line_sc.ResponseCode)
 def post_approve_api(
     params: line_sc.PostRequestTitle,
     current_user: str = Depends(get_current_user),
