@@ -24,7 +24,7 @@ def post_request(subject: str, request_title: str):
 def post_complete(subject: str, request_title: str, owner: str):
     send_dic = {
         "message": (
-            f"\n{subject}さん が\n「{request_title}\nを完了しました!\n{owner}さーん、承認してください!!"
+            f"\n{subject}さん が\n「{request_title}」\nを完了しました!\n{owner}さーん、承認してください!!"
         ),
         "stickerPackageId": 6136,
         "stickerId": 10551378,
